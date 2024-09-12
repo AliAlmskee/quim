@@ -16,11 +16,10 @@ class TestRequest extends FormRequest
     {
         return [
             'user_id' =>'required|integer',
-            'hadith_id' => 'required|integer',
-            'audio_id' => 'required|integer',
-            'quarter_id' => 'required|integer',
+            'hadith_id' => 'required|integer|exists:hadiths,id',
+            'audio_id' => 'required|integer|exists:audios,id',
+            'quarter_id' => 'required|integer|exists:quarters,id',
             'mark' => 'required|integer',
-            'points_added' => 'required|integer',
         ];
     }
 }

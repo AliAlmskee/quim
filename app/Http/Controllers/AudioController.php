@@ -42,5 +42,38 @@ class AudioController
         return response()->json(['message' => 'Hadith Attached successfully!', 'audio' => $audio->toArray()], 200);
     }
 
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|file|max:5000',
+        ]);
+    
+        $file = $request->file('image');
+        $newFileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = '';
+    
+        if (strpos($file->getMimeType(), 'image') === 0) {
+            $file->move(public_path('images'), $newFileName);
+            $filePath = $newFileName;
+        } else {
+            return response()->json('Uploaded file is not an image');
+        }
+    
+        return response()->json(['file_path' => $filePath]);
+    }
+
+    public function getImage($filename)
+{
+    $imagePath = public_path('images/' . $filename);
+  
+
+    if (file_exists($imagePath)) {
+        return response()->file($imagePath);
+    }
+
+    return response()->json(['error' => 'File not found'], 404);
+}
+
+
 
 }

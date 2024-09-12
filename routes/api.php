@@ -19,7 +19,6 @@ use App\Http\Controllers\HadithController;
     Route::apiResource('books', BookController::class);
     Route::apiResource('hadiths', HadithController::class);
     Route::apiResource('centers', CenterController::class);
-    Route::apiResource('tests', TestController::class);
     Route::resource('quarters', QuarterController::class);
 
     Route::prefix('books')->group(function () {
@@ -45,7 +44,10 @@ use App\Http\Controllers\HadithController;
 
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
-
+        Route::apiResource('tests', TestController::class);
         Route::post('/student/register', [AuthController::class, 'studentRegister']);
 
     });
+  
+    Route::post('/image/upload',  [AudioController::class, 'uploadImage']);
+    Route::get('/image/{filename}',  [AudioController::class, 'getImage']);

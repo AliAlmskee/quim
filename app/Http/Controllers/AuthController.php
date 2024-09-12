@@ -52,20 +52,19 @@ class AuthController extends Controller
         $user->phone = $request->input('phone');
         $user->role = 'STUDENT';
         $user->center_id = Auth::user()->center_id;
-        $user->otp = $this->makeOTP($user);
+        $user->otp = $this->makeOTP();
         $user->save();
 
         return response()->json(['message' => 'Student registered successfully', 'user' => $user], 201);
     }
-    private function makeOTP($user)
+    private function makeOTP(): string
     {
         do {
             $otp = rand(100000, 999999);
             $exists = User::where('otp', $otp)->exists();
         } while ($exists);
-
-
-        return $otp;
+    
+        return (string) $otp;
     }
 
     public function AdminLogin(Request $request)

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('hadiths', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->text('text');
             $table->string('order');
             $table->timestamps();

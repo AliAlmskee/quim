@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TestRequest;
 use App\Http\Resources\TestResource;
+use App\Models\Center;
 use App\Models\Test;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
@@ -18,7 +19,11 @@ class TestController extends Controller
 
     public function store(TestRequest $request): TestResource
     {
-        $test = Test::create($request->validated());
+        $center = Center::find(Auth::user()->center_id);
+        $request->merge(['points_added' => $request->mark * $center->points_factor * 0.1]);
+        $requestData = $request->validated();
+        $requestData['points_added'] = $request->input('points_added'); 
+        $test = Test::create($requestData);
         return new TestResource($test);
     }
 
